@@ -1,0 +1,207 @@
+import { Appear } from 'mdx-deck'
+import { condensed } from '@mdx-deck/themes'
+export const theme = condensed
+
+# Tips de modelado de datos para Cloud Firestore
+
+import firebase from './images/firebase.png'
+
+<img src={firebase} alt="Firebase" />
+
+<Appear>
+
+## ...Y otros tips
+
+</Appear>
+
+---
+
+## Acerca de mí
+
+```javascript
+{
+  nombre: 'Kevin Rodríguez',
+  rol: 'Senior Web Developer @Gorilla Logic',
+  gustos: [
+    'Aprender',
+    'Programar 👨🏻‍💻',
+    'Tocar Guitarra 🎸'
+    'Gatos 🐈'
+  ],
+}
+```
+
+---
+
+# Cloud Firestore
+
+Se trata de una base de datos de documentos `NoSQL`, flexible y escalable
+que mantiene sus datos sincronizados con los clientes en tiempo real 
+y ofrece asistencia sin conexión para dispositivos móviles y la web.
+
+import structure from './images/structure.png'
+
+<img src={structure} alt="Data Structure" />
+
+---
+
+# Estructura de documentos
+
+Por lo general, cuando hablamos de `NoSQL`,
+es usual que se presenten algunos retos a la hora de modelar
+la estructura de la información. Si no se siguen buenas prácticas
+al modelar la información, se pueden tener malas consecuencias como:
+
+<ul>
+  <Appear>
+    <li>Fallas de rendimiento</li>
+    <li>Costos agregados</li>
+    <li>Problemas en la lógica de las aplicaciones</li>
+  </Appear>
+</ul>
+
+---
+
+[How we spent 30k USD in Firebase in less than 72 hours](https://hackernoon.com/how-we-spent-30k-usd-in-firebase-in-less-than-72-hours-307490bd24d)
+
+💸
+
+---
+
+# No solo la estructura es importante
+
+También es importante pensar la manera en la que los datos están estructurados
+si no también en como estos fluyen y pueden ser consultado, ya que aunque
+la manera en la que se diseña la estructura de los datos afecta como se consume,
+a veces existe una tendencia de no optimizar como se consultan los datos.
+
+---
+
+# Y los tips?
+
+![Confused](https://media.giphy.com/media/kaq6GnxDlJaBq/giphy.gif)
+
+---
+
+# Tip #1
+
+---
+
+Hay que aprender bien las diversas maneras de relacionar los datos en
+Cloud Firestore:
+
+<ul>
+  <Appear>
+    <li>Relaciones uno a uno (Documentos embebidos)</li>
+    <li>Relaciones uno a muchos (Jerarquías)</li>
+    <li>Relaciones de muchos a muchos (El intermediario)</li>
+  </Appear>
+</ul>
+
+[Firestore NoSQL Data Modeling by Example](https://angularfirebase.com/lessons/firestore-nosql-data-modeling-by-example/)
+
+---
+
+# Tip #2
+
+---
+
+Desearía haber conocido antes:
+
+```javascript
+db.collectionGroup(`pagos`);
+```
+
+--- 
+
+Dada la estructura:
+
+```
+usuarioA
+  pagos
+    PAG-2012394
+    PAG-2394288
+    PAG-1238321
+usuarioB
+  pagos
+    PAG-4327843
+```
+
+---
+
+El método `collectionGroup` permite obtener todos los documentos de
+las colecciones con el nombre dado aunque estén en nodos separados (usuarios en este ejemplo)
+
+
+---
+
+# Tip #3
+
+---
+
+# Tip #3
+
+No tengas miedo de duplicar información una que otra vez para optimizar
+las lecturas. Muy a menudo es mejor duplicar algunos datos que tener que iterar
+sobre las diferentes colecciones, causando gastos innecesarios.
+
+---
+
+Un claro ejemplo de esto puede ser una lista de chat en una app en la que
+los usuarios no cambian sus `usernames` y queremos mostrar sus nombres.
+
+Un principiante podría cometer la equivocación de crear una colección llamada
+`sala`, la cual contiene un array de `personas` que apuntan a los identificadores
+únicos de las personas que están en esa sala de chat.
+
+---
+
+Un mejor acercamiento sería guardar en la sala de chat, de una vez,
+el nombre de las personas que vamos a mostrar en la interfaz de usuario
+en lugar que sus identificadores de usuario. Reduciendo el número de lecturas
+realizadas a la base de datos.
+
+---
+
+# Tip #4
+
+---
+
+# Tip #4
+
+No sacrifiques la estructura de tu base de datos por tener facilidad con
+las reglas de seguridad.
+
+Algunas veces es tentador mover ciertas estructuras de un lugar a otro
+para facilitar la lectura y escritura de reglas de seguridad pero esto
+puede ser problemático.
+
+Un mejor acercamiento puede ser utilizar `custom claims`.
+
+---
+
+# Tip #5
+
+---
+
+# Tip #5
+
+Conoce los tipos de datos que se pueden almacenar en un documento
+
+---
+
+<ul>
+  <Appear>
+    <li>Array</li>
+    <li>Boolean</li>
+    <li>Byte *Hasta 1MB</li>
+    <li>Timestamp</li>
+    <li>Number (Con coma flotante)</li>
+    <li>Geoposition</li>
+    <li>Number (Entero)</li>
+    <li>Subdocumento (Mapa o diccionario)</li>
+    <li>Null</li>
+    <li>Referencia</li>
+    <li>Texto (Solo se indexan 1500 bytes)</li>
+  </Appear>
+</ul>

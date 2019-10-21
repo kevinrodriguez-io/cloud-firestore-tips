@@ -1,0 +1,1 @@
+import { condensed } from '@mdx-deck/themes';
