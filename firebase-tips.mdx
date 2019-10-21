@@ -1,6 +1,6 @@
 import { Appear } from 'mdx-deck'
-import { condensed } from '@mdx-deck/themes'
-export const theme = condensed
+import { future } from '@mdx-deck/themes'
+export const theme = future
 
 # Tips de modelado de datos para Cloud Firestore
 
@@ -205,3 +205,205 @@ Conoce los tipos de datos que se pueden almacenar en un documento
     <li>Texto (Solo se indexan 1500 bytes)</li>
   </Appear>
 </ul>
+
+---
+
+# Tip #6
+
+---
+
+# Tip #6
+
+Las cloud functions pueden ser tus mejores amigas ⭐️
+
+import functions from './images/functions.png'
+
+<img src={functions} alt="Cloud Functions" width="400" />
+
+---
+
+Las cloud functions sirven para
+
+<ul>
+  <Appear>
+    <li>Reaccionar a eventos (Auth, Database, Storage, etc)</li>
+    <li>Ejecutar cualquier código del lado del servidor del cual no se confía al cliente</li>
+    <li>Realizar integraciones con ptras plataformas</li>
+    <li>Duplicar datos para optimizar las lecturas</li>
+    <li>Eliminar complejidad en el cliente</li>
+  </Appear>
+</ul>
+
+---
+
+# Tip #7
+
+---
+
+# Tip #7
+
+## Firebase Extensions 🧩
+
+Es una de las características más recientes agregadas a Firebase y permite
+ampliar las capacidades de Firebase y Cloud Firestore mediante configuraciones
+muy pequeñas y sencillas.
+
+[Firebase Extensions](https://firebase.google.com/products/extensions)
+
+---
+
+Extensiones soportadas
+
+<ul>
+  <Appear>
+    <li>Redimension de imagenes</li>
+    <li>Traduccion de texto</li>
+    <li>Sincronizarse con Mailchimp</li>
+    <li>Enviar correo ✉️</li>
+    <li>Exportar colecciones a BigQuery</li>
+    <li>URL Shortener (Bitly)</li>
+    <li>Contadores distribuidos</li>
+    <li>Limitar nodos hijos</li>
+    <li>Eliminar datos de usuario</li>
+  </Appear>
+</ul>
+
+---
+
+# Tip #8
+
+---
+
+# Tip #8
+
+Segregar vs Agregar
+
+---
+
+# Segregar
+
+Segregar se refiere a tomar trozos de un documento y moverlos a otros documentos propios,
+viniendo de `SQL` es muy común pensar de esta manera, sin embargo viene con ciertos pros y contras:
+
+<ul>
+  <Appear>
+    <li>Hay que hacer Joins del lado del Cliente 😞</li>
+    <li>Los datos se vuelven complicados de mantener</li>
+    <li>Puede causar pérdidas relacionales 👻</li>
+  </Appear>
+</ul>
+
+---
+
+# Agregar
+
+Por lo general es mejor agregar datos, ya que esto viene con diversos beneficios:
+
+<ul>
+  <Appear>
+    <li>Lecturas en una sola operación 💰</li>
+    <li>Menos joins del lado del cliente y facilidad para obtener datos</li>
+    <li>Por lo general es lo más recomendado para Cloud Firestore</li>
+  </Appear>
+</ul>
+
+---
+
+# 🚨 Gotcha de agregar
+
+Las reglas de seguridad pueden ser muy útiles, sin embargo Cloud Firestore no permite
+reglas de lectura parciales, (Por ejemplo, permitir leer solo ciertos campos de un documento a ciertos roles).
+
+---
+
+# Tip #9
+
+---
+
+# Tip #9
+
+Algunas veces es más conveniente utilizar arrays en lugar de colecciones para
+almacenar datos iterables. Por ejemplo una sencilla lista de strings:
+
+---
+
+```javascript
+// id: noticias/d8a7d8a743az29sd
+{
+  titulo: 'La planilla estatal baja',
+  body: '...',
+  tags: [
+    'política',
+    'profesionales',
+    'gobierno'
+  ]
+}
+```
+
+---
+
+Al utilizar arrays sencillos se pueden hacer consultas con el operador `array-contains`
+, el cual funciona permitiendo evaluar si un array tiene un elemento en específico.
+
+De esta manera podriamos traer todas las noticias de "política" con el siguiente query:
+
+```javascript
+db
+  .collection('noticias')
+  .where('tags', 'array-contains', 'política')
+```
+
+---
+
+# Tip 10
+
+---
+
+# Tip 10
+
+Cloud Firestore es muy permisivo con respecto a la manera en la que la información se organiza
+pero si quieres agregar un poco más de robustez a los datos recomiendo Typescript al 100%.
+
+Al usar Typescript podemos modelar información utilizando interfaces
+y tenemos control de cómo lucen los datos.
+
+---
+
+import typescript from './images/typescript.png'
+
+<img src={typescript} alt="Typescript" />
+
+---
+
+# Tip 11
+
+---
+
+# Tip 11
+
+Siempre está bien pedir un segundo par de ojos para que nos dé una opinión sobre
+la manera en la que están estructurados los datos.
+
+---
+
+## Contacto
+
+```javascript
+{
+  nombre: 'Kevin Rodríguez',
+  email: '_@kevinrodriguez.io',
+  phoneNumber: '84215616',
+  website: 'https://kevinrodriguez.io/'
+  linkedin: 'https://www.linkedin.com/in/kevinrodriguez-io/'
+}
+```
+
+---
+
+import contacto from './images/contacto.png'
+
+<img src={contacto} alt="Contacto" width="500" />
+
+---
+
+# Gracias 🔥
